@@ -52,6 +52,46 @@ class Dog:
     def body_status(self):
         """获取机体状态"""
         return self._body_status
+
+    @property
+    def body_height(self):
+        """获取机体高度"""
+        return self.body_status.z
+        
+    @body_height.setter
+    def body_height(self, value):
+        """设置机体高度"""
+        self.set_parameters({'body_height': value})
+        
+    @property
+    def roll(self):
+        """获取横滚角"""
+        return self.body_status.roll
+        
+    @roll.setter
+    def roll(self, value):
+        """设置横滚角"""
+        self.set_parameters({'roll': value})
+        
+    @property
+    def pitch(self):
+        """获取俯仰角"""
+        return self.body_status.pitch
+        
+    @pitch.setter
+    def pitch(self, value):
+        """设置俯仰角"""
+        self.set_parameters({'pitch': value})
+        
+    @property
+    def yaw(self):
+        """获取偏航角"""
+        return self.body_status.yaw
+        
+    @yaw.setter
+    def yaw(self, value):
+        """设置偏航角"""
+        self.set_parameters({'yaw': value})
     
     def set_parameters(self, params):
         """设置运动参数"""
@@ -66,3 +106,128 @@ class Dog:
         
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.disconnect()
+
+    # 位置相关属性
+    @property
+    def x(self):
+        return self.body_status.x
+    
+    @x.setter 
+    def x(self, value):
+        self.set_parameters({'x': value})
+    
+    @property
+    def y(self):
+        return self.body_status.y
+    
+    @y.setter
+    def y(self, value):
+        self.set_parameters({'y': value})
+    
+    @property
+    def z(self):
+        return self.body_status.z
+    
+    @z.setter
+    def z(self, value):
+        self.set_parameters({'z': value})
+
+    # 姿态角属性
+    @property
+    def roll(self):
+        return self.body_status.roll
+    
+    @roll.setter
+    def roll(self, value):
+        self.set_parameters({'roll': value})
+    
+    @property
+    def pitch(self):
+        return self.body_status.pitch
+    
+    @pitch.setter
+    def pitch(self, value):
+        self.set_parameters({'pitch': value})
+    
+    @property
+    def yaw(self):
+        return self.body_status.yaw
+    
+    @yaw.setter
+    def yaw(self, value):
+        self.set_parameters({'yaw': value})
+
+    # 线速度属性
+    @property
+    def vx(self):
+        return self.body_status.vx
+    
+    @vx.setter
+    def vx(self, value):
+        self.set_parameters({'vx': value})
+    
+    @property
+    def vy(self):
+        return self.body_status.vy
+    
+    @vy.setter
+    def vy(self, value):
+        self.set_parameters({'vy': value})
+    
+    @property
+    def vz(self):
+        return self.body_status.vz
+    
+    @vz.setter
+    def vz(self, value):
+        self.set_parameters({'vz': value})
+
+    # 角速度属性
+    @property
+    def wx(self):
+        return self.body_status.wx
+    
+    @wx.setter
+    def wx(self, value):
+        self.set_parameters({'wx': value})
+    
+    @property
+    def wy(self):
+        return self.body_status.wy
+    
+    @wy.setter
+    def wy(self, value):
+        self.set_parameters({'wy': value})
+    
+    @property
+    def wz(self):
+        return self.body_status.wz
+    
+    @wz.setter
+    def wz(self, value):
+        self.set_parameters({'wz': value})
+
+    # 加速度属性
+    @property
+    def ax(self):
+        return self.body_status.ax
+    
+    @ax.setter
+    def ax(self, value):
+        self.set_parameters({'ax': value})
+    
+    @property
+    def ay(self):
+        return self.body_status.ay
+    
+    @ay.setter
+    def ay(self, value):
+        self.set_parameters({'ay': value})
+    
+    @property
+    def az(self):
+        return self.body_status.az
+    
+    @az.setter
+    def az(self, value):
+        self.set_parameters({'az': value})
