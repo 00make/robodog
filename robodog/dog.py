@@ -6,16 +6,60 @@ from .client import ROSClient
 from .controller import DogController, UserMode
 from .subscriber import DogStateSubscriber
 
-# 参数范围常量定义
+# 参数范围常量定义 - 整理分组并添加详细注释
 PARAM_RANGES = {
-    'body_height': (0.1, 0.35),  # 机体高度范围
-    'roll': (-0.5, 0.5),        # 横滚角范围
-    'pitch': (-0.5, 0.5),       # 俯仰角范围
-    'yaw': (-0.5, 0.5),         # 偏航角范围
-    'vx': (-1.0, 1.0),          # 前进速度范围
-    'vy': (-1.0, 1.0),          # 侧向速度范围
+    # 基础运动参数组
+    'vx': (-1.0, 1.0),             # 前后移动速度(m/s)，向前为正
+    'vy': (-1.0, 1.0),             # 左右移动速度(m/s)，向左为正
+    'wz': (-1.0, 1.0),             # 旋转速度(rad/s)，顺时针为正
+    
+    # 姿态参数组
+    'roll': (-0.5, 0.5),           # 横滚角(rad)
+    'pitch': (-0.5, 0.5),          # 俯仰角(rad)
+    'yaw': (-0.5, 0.5),            # 偏航角(rad)
+    'body_height': (0.1, 0.35),    # 机体高度(m)
+    'body_tilt_x': (-0.2, 0.2),    # 身体前后偏移(m)
+    'body_tilt_y': (-0.2, 0.2),    # 身体左右偏移(m)
+    
+    # 步态参数组
+    'foot_height': (0.0, 0.15),    # 抬脚高度(m)
+    'swing_duration': (0.1, 1.0),   # 摆动周期(s)
+    'friction': (0.1, 1.0),        # 足底摩擦系数
+    'scale_x': (0.5, 2.0),         # 支撑面X方向缩放比例
+    'scale_y': (0.5, 2.0),         # 支撑面Y方向缩放比例
+    
+    # 特殊动作参数组
+    'swaying_duration': (0.5, 5.0), # 左右摇摆周期(s)
+    'jump_distance': (0.0, 1.0),    # 跳跃距离(m)
+    'jump_angle': (-3.14, 3.14),    # 跳跃旋转角度(rad)
+    
+    # 控制参数组
+    'velocity_decay': (0.0, 1.0),   # 速度衰减比例
+    'decelerate_time': (0.0, 86400.0),      # 减速延迟时间(s)
+    'decelerate_duration': (0.0, 86400.0),   # 减速持续时间(s)
 }
 
+def param_property(param_name: str, doc: str = None, get_attr: str = None, type_convert=None):
+    """创建参数属性的装饰器工厂
+    
+    Args:
+        param_name: 参数名称
+        doc: 文档字符串
+        get_attr: 获取值时使用的属性名(默认与param_name相同)
+        type_convert: 设置值时的类型转换函数
+    """
+    def getter(self):
+        """获取参数值"""
+        status = self.body_status if not param_name.startswith('user_') else self.ctrl_state
+        return getattr(status, get_attr or param_name)
+        
+    def setter(self, value):
+        """设置参数值"""
+        if type_convert:
+            value = type_convert(value)
+        self.set_parameters({param_name: value})
+        
+    return property(getter, setter, doc=doc)
 
 class Dog:
     """机器狗统一管理类"""
@@ -27,7 +71,8 @@ class Dog:
         self._ctrl_state = CtrlState()
         self._body_status = BodyStatus()
 
-    def connect(self):
+    # 基础连接和状态管理方法
+    def connect(self): 
         """连接到机器狗"""
         self._client.connect()
         self._controller = DogController(self._client)
@@ -64,137 +109,101 @@ class Dog:
         """获取机体状态"""
         return self._body_status
 
+    # 参数验证和设置
     def _validate_param(self, name: str, value: Union[int, float]) -> None:
-        """验证参数是否合法"""
+        """验证单个参数是否合法"""
         if not isinstance(value, (int, float)):
             raise ValueError(f"{name} value must be a number")
-
+        
         if name in PARAM_RANGES:
             min_val, max_val = PARAM_RANGES[name]
             if not min_val <= value <= max_val:
-                raise ValueError(f"{name} value must be between {
-                                 min_val} and {max_val}")
-
-    def _validate_param_change(self, name: str, value: float, timeout: float = 2.0) -> bool:
-        """验证参数是否成功改变"""
-        start_time = time.time()
-        while time.time() - start_time < timeout:
-            if not self.is_state_valid():
-                time.sleep(0.1)
-                continue
-
-            current_value = None
-            if name == 'body_height':
-                current_value = self.body_status.z
-            elif name in ('roll', 'pitch', 'yaw', 'vx', 'vy'):
-                current_value = getattr(self.body_status, name)
-
-            if current_value is not None and abs(current_value - value) < 0.01:
-                return True
-            time.sleep(0.1)
-        return False
+                raise ValueError(f"{name} must be between {min_val} and {max_val}")
 
     def set_parameters(self, params: Dict[str, float]) -> bool:
         """设置运动参数"""
-        # 只保留基本的参数验证
+        # 验证所有参数
         for name, value in params.items():
             if name in PARAM_RANGES:
                 self._validate_param(name, value)
-
-        # 直接调用控制器设置参数
+        # 调用控制器
         return self._controller.set_parameters(params)
 
-    def _set_param_safe(self, name: str, value: Union[int, float]) -> None:
-        """安全设置参数"""
-        try:
-            self._validate_param(name, value)
-            self.set_parameters({name: value})
-        except Exception as e:
-            raise RuntimeError(f"Error setting {name}: {str(e)}")
+    # 基础运动属性
+    vx = param_property('vx', '前后移动速度(m/s)')
+    vy = param_property('vy', '左右移动速度(m/s)')
+    wz = param_property('wz', '旋转速度(rad/s)')
 
-    # 核心控制属性
-    @property
-    def body_height(self):
-        """获取机体高度"""
-        return self.body_status.z
+    # 姿态控制属性
+    body_height = param_property('body_height', '机体高度(m)', 'z')
+    roll = param_property('roll', '横滚角(rad)')
+    pitch = param_property('pitch', '俯仰角(rad)')
+    yaw = param_property('yaw', '偏航角(rad)')
+    body_tilt_x = param_property('body_tilt_x', '身体前后偏移(m)')
+    body_tilt_y = param_property('body_tilt_y', '身体左右偏移(m)')
 
-    @body_height.setter
-    def body_height(self, value):
-        """设置机体高度"""
-        self.set_parameters({'body_height': value})
+    # 步态参数
+    foot_height = param_property('foot_height', '抬脚高度(m)')
+    swing_duration = param_property('swing_duration', '摆动周期(s)')
+    friction = param_property('friction', '足底摩擦系数')
+    scale_x = param_property('scale_x', '支撑面X方向缩放比例')
+    scale_y = param_property('scale_y', '支撑面Y方向缩放比例')
 
-    @property
-    def roll(self):
-        """获取横滚角"""
-        return self.body_status.roll
+    # 特殊动作参数
+    swaying_duration = param_property('swaying_duration', '左右摇摆周期(s)')
+    jump_distance = param_property('jump_distance', '跳跃距离(m)')
+    jump_angle = param_property('jump_angle', '跳跃旋转角度(rad)')
 
-    @roll.setter
-    def roll(self, value):
-        """设置横滚角"""
-        self.set_parameters({'roll': value})
-
-    @property
-    def pitch(self):
-        """获取俯仰角"""
-        return self.body_status.pitch
-
-    @pitch.setter
-    def pitch(self, value):
-        """设置俯仰角"""
-        self.set_parameters({'pitch': value})
-
-    @property
-    def yaw(self):
-        """获取偏航角"""
-        return self.body_status.yaw
-
-    @yaw.setter
-    def yaw(self, value):
-        self.set_parameters({'yaw': value})
-
-    # 速度控制属性
-    @property
-    def vx(self):
-        """获取前进速度"""
-        return self.body_status.vx
-
-    @vx.setter
-    def vx(self, value):
-        """设置前进速度"""
-        self.set_parameters({'vx': value})
-
-    @property
-    def vy(self):
-        """获取侧向速度"""
-        return self.body_status.vy
-
-    @vy.setter
-    def vy(self, value):
-        """设置侧向速度"""
-        self.set_parameters({'vy': value})
+    # 控制参数
+    velocity_decay = param_property('velocity_decay', '速度衰减比例')
+    collision_protect = param_property('collision_protect', '碰撞保护状态(0:关闭,1:开启)', type_convert=int)
+    decelerate_time = param_property('decelerate_time', '减速延迟时间(s)')
+    decelerate_duration = param_property('decelerate_duration', '减速持续时间(s)')
+    free_leg = param_property('free_leg', '自由腿序号', type_convert=int)
 
     # 只读状态属性
     @property
-    def x(self):
-        """获取X位置(只读)"""
-        return self.body_status.x
+    def x(self): """X位置(只读)"""; return self.body_status.x
 
     @property
-    def y(self):
-        """获取Y位置(只读)"""
-        return self.body_status.y
+    def y(self): """Y位置(只读)"""; return self.body_status.y
 
     @property
-    def z(self):
-        """获取Z位置(只读)"""
-        return self.body_status.z
+    def z(self): """Z位置(只读)"""; return self.body_status.z
 
+    # 组合参数设置方法
+    def set_gait_params(self, friction: float = None, scale_x: float = None, scale_y: float = None):
+        """设置步态相关参数"""
+        params = {}
+        if friction is not None: params['friction'] = friction
+        if scale_x is not None: params['scale_x'] = scale_x
+        if scale_y is not None: params['scale_y'] = scale_y
+        if params: self.set_parameters(params)
+
+    def set_motion_params(self, swaying_duration: float = None, jump_distance: float = None, 
+                         jump_angle: float = None):
+        """设置运动相关参数"""
+        params = {}
+        if swaying_duration is not None: params['swaying_duration'] = swaying_duration
+        if jump_distance is not None: params['jump_distance'] = jump_distance
+        if jump_angle is not None: params['jump_angle'] = jump_angle
+        if params: self.set_parameters(params)
+
+    def set_control_params(self, velocity_decay: float = None, collision_protect: int = None,
+                          decelerate_time: float = None, decelerate_duration: float = None):
+        """设置控制相关参数"""
+        params = {}
+        if velocity_decay is not None: params['velocity_decay'] = velocity_decay
+        if collision_protect is not None: params['collision_protect'] = collision_protect
+        if decelerate_time is not None: params['decelerate_time'] = decelerate_time
+        if decelerate_duration is not None: params['decelerate_duration'] = decelerate_duration
+        if params: self.set_parameters(params)
+
+    # 用户模式控制
     def set_user_mode(self, mode: UserMode):
         """设置用户模式"""
         return self._controller.set_user_mode(mode)
 
-    def __enter__(self):
-        return self.connect()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.disconnect()
+    # 上下文管理
+    def __enter__(self): return self.connect()
+    def __exit__(self, exc_type, exc_val, exc_tb): self.disconnect()
