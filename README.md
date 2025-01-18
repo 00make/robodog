@@ -19,6 +19,7 @@ pip install robodog
 
 ```python
 from robodog import Dog
+import time
 
 with Dog() as dog:
     # Adjust standing height

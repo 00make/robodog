@@ -19,6 +19,7 @@ pip install robodog
 
 ```python
 from robodog import Dog
+import time
 
 with Dog() as dog:
     # 调整站立高度
