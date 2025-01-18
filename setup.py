@@ -5,14 +5,14 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name="robodog",
-    version="0.1.2",
+    version="0.1.2.1",
     packages=find_packages(),
     install_requires=[
         'roslibpy>=1.3.0',
         'dataclasses>=0.6;python_version<"3.7"',
         'typing-extensions>=4.0.0',
     ],
-    
+
     # Project metadata
     author="00make",
     author_email="towardsrwby@gmail.com",
@@ -25,7 +25,7 @@ setup(
         "Documentation": "https://github.com/00make/robodog/wiki",
         "Source Code": "https://github.com/00make/robodog",
     },
-    
+
     # Classification info
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -41,10 +41,10 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    
+
     # Python version requirement
     python_requires='>=3.6',
-    
+
     # Additional dependencies
     extras_require={
         'dev': [
@@ -59,20 +59,20 @@ setup(
             'sphinx-rtd-theme>=0.5',
         ],
     },
-    
+
     # Include additional files
     package_data={
         'robodog': ['py.typed'],
     },
     include_package_data=True,
-    
+
     # Entry points
     entry_points={
         'console_scripts': [
             'robodog-demo=examples.simple_demo:main',
         ],
     },
-    
+
     # Keywords
     keywords='robotics, alphadog, ros, robot control, python',
 )

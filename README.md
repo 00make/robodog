@@ -1,16 +1,8 @@
-# robodog
+# RoboDog SDK
 
-A Python library for controlling AlphaDog robotic dogs.
+[English](README.md) | [中文](README_zh.md)
 
-## Features
-
-* Automated ROS connection management
-* Multiple control modes (standing, walking, dancing, etc.)
-* Real-time status monitoring
-* Dynamic parameter configuration
-* Elegant context manager support
-* Comprehensive error handling
-* Type annotation support
+Python SDK for AlphaDog robotic dog control.
 
 ## Installation
 
@@ -27,16 +19,12 @@ pip install robodog
 
 ```python
 from robodog import Dog
-from robodog.config import UserMode
-import time
 
 # Connect to the dog using default IP
 with Dog() as dog:
-    # Switch to normal mode
-    dog.set_user_mode(UserMode.NORMAL)
-    
+
     # Adjust standing height
-    dog.set_parameters({'body_height': 0.25})
+    dog.body_height=0.25
     time.sleep(2)
     
     # Restore default height
@@ -50,25 +38,6 @@ with Dog() as dog:
 * Real-time status monitoring
 
 Check the `examples` directory for more examples.
-
-### User Modes
-
-Available user modes:
-
-* `UserMode.NORMAL`: Normal mode
-* `UserMode.QUIET`: Quiet mode
-* `UserMode.KIDS`: Kids mode
-* `UserMode.EXTREME`: Extreme mode
-* `UserMode.DANCE`: Dance mode
-* `UserMode.MUTE`: Mute mode
-* `UserMode.LONG_ENDURANCE`: Long endurance mode
-
-Basic parameters:
-
-* `body_height`: Body height (default 0.23)
-* `roll`: Roll angle
-* `pitch`: Pitch angle
-* `yaw`: Yaw angle
 
 ### Contributing
 
