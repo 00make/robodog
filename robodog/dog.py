@@ -82,13 +82,13 @@ class Dog:
             if not self.is_state_valid():
                 time.sleep(0.1)
                 continue
-                
+
             current_value = None
             if name == 'body_height':
                 current_value = self.body_status.z
             elif name in ('roll', 'pitch', 'yaw', 'vx', 'vy'):
                 current_value = getattr(self.body_status, name)
-                
+
             if current_value is not None and abs(current_value - value) < 0.01:
                 return True
             time.sleep(0.1)
@@ -96,11 +96,11 @@ class Dog:
 
     def set_parameters(self, params: Dict[str, float]) -> bool:
         """设置运动参数"""
-        # 确保参数值在合法范围内
+        # 只保留基本的参数验证
         for name, value in params.items():
             if name in PARAM_RANGES:
                 self._validate_param(name, value)
-        
+
         # 直接调用控制器设置参数
         return self._controller.set_parameters(params)
 
@@ -108,10 +108,7 @@ class Dog:
         """安全设置参数"""
         try:
             self._validate_param(name, value)
-            # 改用 set_parameters 并等待验证结果
-            success = self.set_parameters({name: value})
-            if not success:
-                raise RuntimeError(f"Failed to verify {name} change to {value}")
+            self.set_parameters({name: value})
         except Exception as e:
             raise RuntimeError(f"Error setting {name}: {str(e)}")
 
@@ -124,9 +121,7 @@ class Dog:
     @body_height.setter
     def body_height(self, value):
         """设置机体高度"""
-        # 直接使用 set_parameters，与手动设置保持一致
         self.set_parameters({'body_height': value})
-        time.sleep(0.1)  # 给一个小的延时确保参数生效
 
     @property
     def roll(self):
@@ -137,7 +132,6 @@ class Dog:
     def roll(self, value):
         """设置横滚角"""
         self.set_parameters({'roll': value})
-        time.sleep(0.1)
 
     @property
     def pitch(self):
@@ -148,7 +142,6 @@ class Dog:
     def pitch(self, value):
         """设置俯仰角"""
         self.set_parameters({'pitch': value})
-        time.sleep(0.1)
 
     @property
     def yaw(self):
@@ -158,7 +151,6 @@ class Dog:
     @yaw.setter
     def yaw(self, value):
         self.set_parameters({'yaw': value})
-        time.sleep(0.1)
 
     # 速度控制属性
     @property
@@ -170,7 +162,6 @@ class Dog:
     def vx(self, value):
         """设置前进速度"""
         self.set_parameters({'vx': value})
-        time.sleep(0.1)
 
     @property
     def vy(self):
@@ -181,7 +172,6 @@ class Dog:
     def vy(self, value):
         """设置侧向速度"""
         self.set_parameters({'vy': value})
-        time.sleep(0.1)
 
     # 只读状态属性
     @property

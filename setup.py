@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name="robodog",
-    version="0.1.1",
+    version="0.1.1.1",
     packages=find_packages(),
     install_requires=[
         'roslibpy>=1.3.0',
