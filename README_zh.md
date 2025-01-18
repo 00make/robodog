@@ -88,7 +88,7 @@ dog.set_control_params(
 
 ## 示例程序
 
-完整的演示程序请查看 `examples/demo_all_params.py`，其中包含：
+完整的演示程序请查看 `examples`，其中包含：
 
 - 基础运动控制演示
 - 高级运动参数调整
@@ -98,7 +98,7 @@ dog.set_control_params(
 运行示例：
 
 ```bash
-python examples/demo_all_params.py
+python examples/demo_basic_movement.py
 ```
 
 ### 贡献代码

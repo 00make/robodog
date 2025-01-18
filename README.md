@@ -88,7 +88,7 @@ dog.set_control_params(
 
 ## Example Programs
 
-Check out `examples/demo_all_params.py` for a complete demonstration including:
+Check out `examples` for a complete demonstration including:
 
 - Basic motion control demo
 - Advanced motion parameter adjustment
@@ -98,7 +98,7 @@ Check out `examples/demo_all_params.py` for a complete demonstration including:
 Running the example:
 
 ```bash
-python examples/demo_all_params.py
+python examples/demo_basic_movement.py
 ```
 
 ### Contributing
