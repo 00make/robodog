@@ -1,6 +1,27 @@
 from robodog import Dog, UserMode
-from utils import print_state, reset_posture
 import time
+
+# 默认参数
+DEFAULT_POSTURE = {
+    'body_height': 0.23,
+    'roll': 0.0,
+    'pitch': 0.0,
+    'yaw': 0.0,
+    'vx': 0.0,
+    'vy': 0.0,
+    'wz': 0.0
+}
+
+
+def print_state(dog, title="Current Status"):
+    """Print detailed status information"""
+    print(f"\n===== {title} =====")
+    print(f"User Mode: {dog.ctrl_state.user_mode}")
+    print(f"Position: x={dog.x:.2f}, y={dog.y:.2f}, z={dog.z:.2f}")
+    print(f"Velocity: vx={dog.vx:.2f}, vy={dog.vy:.2f}")
+    print(f"Posture: roll={dog.roll:.2f}, pitch={
+          dog.pitch:.2f}, yaw={dog.yaw:.2f}")
+
 
 def demo_advanced_movement(dog):
     """Advanced movement demonstration"""
@@ -31,6 +52,7 @@ def demo_advanced_movement(dog):
     dog.vx = 0.0
     dog.wz = 0.0
 
+
 if __name__ == '__main__':
     with Dog() as dog:
         try:
@@ -39,4 +61,4 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print("\nProgram interrupted by user")
         finally:
-            reset_posture(dog)
+            dog.set_parameters(DEFAULT_POSTURE)
