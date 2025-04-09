@@ -47,7 +47,7 @@ def demo_basic_movement(dog):
     print_state(dog, "After tilt test")
 
 if __name__ == '__main__':
-    with Dog() as dog:
+    with Dog(host='192.168.31.148') as dog:
         try:
             dog.set_user_mode(UserMode.NORMAL)
             demo_basic_movement(dog)
