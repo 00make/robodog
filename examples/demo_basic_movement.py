@@ -33,9 +33,14 @@ def demo_basic_movement(dog):
     # Forward and backward movement
     print("\n2. Testing forward/backward movement...")
     for speed in [0.1, -0.1, 0.0]:
-        dog.vx = speed
+        for i in range(10000):
+            dog.vx = 2.0
+            time.sleep(0.1)
+        #dog.vx = 2.0
+        #持续前进
+         
         print(f"Setting forward speed to {speed}")
-        time.sleep(2)
+        time.sleep(20)
     print_state(dog, "After movement test")
 
     # Body tilt demonstration
