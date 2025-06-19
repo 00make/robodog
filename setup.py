@@ -24,26 +24,20 @@ setup(
         "Bug Tracker": "https://github.com/00make/robodog/issues",
         "Documentation": "https://github.com/00make/robodog/wiki",
         "Source Code": "https://github.com/00make/robodog",
-    },
-
-    # Classification info
+    },    # Classification info
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Scientific/Engineering",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 
-    # Python version requirement
-    python_requires='>=3.6',
+    # Python version requirement - Only Python 3.9 is supported
+    python_requires='==3.9.*',
 
     # Additional dependencies
     extras_require={

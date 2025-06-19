@@ -234,7 +234,7 @@ def keyboard_control_loop(dog):
 
 if __name__ == '__main__':
     # 替换为您的机器狗IP地址
-    host = '192.168.139.67'  # 默认值，根据实际情况修改
+    host = '192.168.118.29'  # 默认值，根据实际情况修改
     
     try:
         with Dog(host=host) as dog:
