@@ -1,3 +1,11 @@
+# 项目依赖已迁移至 pyproject.toml
+# 推荐使用 uv 安装：
+#   uv pip install -e ".[gui,dev]"
+#
+# 或继续使用 pip：
+#   pip install -e ".[gui,dev]"
+#
+# 以下保留供传统 pip 用户参考：
 numpy>=2.0.1
 pyserial>=3.5
 pynput>=1.7.6

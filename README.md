@@ -6,9 +6,9 @@ A comprehensive Python SDK for AlphaDog robotic dog control, providing intuitive
 
 ## System Requirements
 
-**⚠️ Important: This SDK requires Python 3.9 specifically**
+**⚠️ Important: This SDK supports Python 3.10 - 3.12**
 
-- **Python Version**: Python 3.9 (Required - other versions are not supported)
+- **Python Version**: Python 3.10, 3.11, or 3.12 (Required)
 - **Operating System**: Windows, macOS, Linux
 - **Network**: Robot and computer must be on the same network
 
@@ -16,19 +16,35 @@ A comprehensive Python SDK for AlphaDog robotic dog control, providing intuitive
 
 ### Prerequisites
 
-First, ensure you have Python 3.9 installed:
+First, ensure you have a supported Python version installed:
 
 ```bash
 # Check Python version
-python --version  # Should show Python 3.9.x
+python --version  # Should show Python 3.10.x, 3.11.x, or 3.12.x
 
-# If you don't have Python 3.9, install it from python.org
+# If you don't have a compatible version, install it from python.org
 
 # Quick version check using our tool
 python check_python_version.py
 ```
 
-### Install RoboDog SDK
+### Install RoboDog SDK (Recommended: uv)
+
+We recommend using [uv](https://docs.astral.sh/uv/) for fast, reliable dependency management. The install script will **automatically download and install uv if it is missing**, create a `.venv` virtual environment, and install the SDK along with GUI dependencies.
+
+```bash
+# Clone and install from source
+git clone https://github.com/00make/robodog.git
+cd robodog
+
+# Run the installation script
+# Linux/macOS:
+chmod +x install.sh && ./install.sh
+# Windows:
+install.bat
+```
+
+### Alternative: pip
 
 ```bash
 # Install from PyPI
@@ -37,14 +53,14 @@ pip install robodog
 # Or install from source
 git clone https://github.com/00make/robodog.git
 cd robodog
-pip install -e .
+pip install -e ".[gui,dev]"
 ```
 
 ## Quick Start
 
 1. **Network Setup**: Ensure your computer is on the same network as the robotic dog
 2. **IP Configuration**: Note the IP address of the robotic dog (default: 10.10.10.10)
-3. **Python Environment**: Verify Python 3.9 is active in your environment
+3. **Python Environment**: Verify Python 3.10+ is active in your environment
 
 ### Basic Example
 
@@ -223,8 +239,8 @@ position = (dog.x, dog.y, dog.z)
    - Ensure robot is powered on and ready
 
 2. **Python Version Error**
-   - This SDK requires Python 3.9 specifically
-   - Install Python 3.9 from [python.org](https://www.python.org/downloads/)
+   - This SDK requires Python 3.10, 3.11, or 3.12
+   - Install a compatible version from [python.org](https://www.python.org/downloads/)
 
 3. **Import Errors**
    - Install required dependencies: `pip install -r requirements.txt`

@@ -6,7 +6,16 @@
 
 ## 🚀 快速开始
 
-### 安装依赖
+### 推荐：使用 uv 安装并运行
+
+```bash
+# 在项目根目录执行
+uv run python GUI/unified_control.py
+```
+
+如果尚未安装项目依赖，请先运行根目录的 `install.sh`（Linux/macOS）或 `install.bat`（Windows）。
+
+### 传统方式：手动安装依赖
 
 确保已安装所需的Python包：
 
@@ -293,7 +302,7 @@ python unified_control.py
 
 ### 系统要求
 - **操作系统：** Windows 10/11, macOS 10.14+, Linux
-- **Python版本：** 3.7+
+- **Python版本：** 3.10+（推荐使用 [uv](https://docs.astral.sh/uv/) 管理环境）
 - **内存：** 最低512MB，推荐1GB+
 - **网络：** WiFi或有线网络连接
 

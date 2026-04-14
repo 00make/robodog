@@ -49,7 +49,7 @@ python unified_control.py
 
 ## 📋 系统要求
 
-- **Python**: 3.7+
+- **Python**: 3.10+
 - **操作系统**: Windows 10+, macOS 10.14+, Linux
 - **内存**: 最低512MB
 - **网络**: WiFi或有线连接

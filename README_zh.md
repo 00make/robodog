@@ -6,9 +6,9 @@ AlphaDog 机器狗 Python SDK，提供简单直观的编程接口，支持机器
 
 ## 系统要求
 
-**⚠️ 重要提醒：本SDK仅支持Python 3.9版本**
+**⚠️ 重要提醒：本SDK支持Python 3.10 - 3.12**
 
-- **Python版本**: Python 3.9（必需 - 不支持其他版本）
+- **Python版本**: Python 3.10、3.11 或 3.12（必需）
 - **操作系统**: Windows, macOS, Linux
 - **网络环境**: 机器人和电脑必须在同一网络下
 
@@ -16,19 +16,35 @@ AlphaDog 机器狗 Python SDK，提供简单直观的编程接口，支持机器
 
 ### 环境准备
 
-首先确保您安装了Python 3.9：
+首先确保您安装了兼容的Python版本：
 
 ```bash
 # 检查Python版本
-python --version  # 应显示 Python 3.9.x
+python --version  # 应显示 Python 3.10.x、3.11.x 或 3.12.x
 
-# 如果没有Python 3.9，请从 python.org 下载安装
+# 如果没有兼容版本，请从 python.org 下载安装
 
 # 使用我们的工具快速检查版本
 python check_python_version.py
 ```
 
-### 安装RoboDog SDK
+### 安装RoboDog SDK（推荐：uv）
+
+我们推荐使用 [uv](https://docs.astral.sh/uv/) 进行快速、可靠的依赖管理。安装脚本会**自动检测并安装 uv（如未安装）**，创建 `.venv` 虚拟环境，并安装 SDK 及 GUI 相关依赖。
+
+```bash
+# 克隆并安装源码
+git clone https://github.com/00make/robodog.git
+cd robodog
+
+# 运行安装脚本
+# Linux/macOS:
+chmod +x install.sh && ./install.sh
+# Windows:
+install.bat
+```
+
+### 备选方案：pip
 
 ```bash
 # 从PyPI安装
@@ -37,14 +53,14 @@ pip install robodog
 # 或从源码安装
 git clone https://github.com/00make/robodog.git
 cd robodog
-pip install -e .
+pip install -e ".[gui,dev]"
 ```
 
 ## 快速开始
 
 1. **网络设置**: 确保您的电脑与机器狗在同一网络下
 2. **IP配置**: 记录机器狗的IP地址（默认：10.10.10.10）
-3. **Python环境**: 确认Python 3.9环境已激活
+3. **Python环境**: 确认Python 3.10+环境已激活
 
 ### 基本示例
 
@@ -223,8 +239,8 @@ position = (dog.x, dog.y, dog.z)
    - 确保机器人已开机并就绪
 
 2. **Python版本错误**
-   - 本SDK需要Python 3.9版本
-   - 请从 [python.org](https://www.python.org/downloads/) 安装Python 3.9
+   - 本SDK需要Python 3.10、3.11或3.12版本
+   - 请从 [python.org](https://www.python.org/downloads/) 安装兼容的Python版本
 
 3. **导入错误**
    - 安装必需依赖：`pip install -r requirements.txt`
