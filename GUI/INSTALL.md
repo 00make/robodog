@@ -1,6 +1,49 @@
 # 机器狗统一控制中心 - 快速安装指南
 
-## 🚀 一键启动
+## 🚀 推荐方式：使用 uv 一键安装
+
+### 1. 运行安装脚本
+
+在项目根目录执行：
+
+**Windows用户:**
+```bash
+install.bat
+```
+
+**Linux/macOS用户:**
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+脚本会自动：
+- **检测并安装 uv**（如系统中未安装）
+- 下载兼容的 Python 版本（如需）
+- 创建 `.venv` 虚拟环境
+- 安装 `robodog` 及 GUI 依赖
+
+### 2. 启动程序
+
+使用 uv 直接运行（无需手动激活环境）：
+```bash
+uv run python GUI/unified_control.py
+```
+
+或先激活环境：
+```bash
+# Linux/macOS
+source .venv/bin/activate
+python GUI/unified_control.py
+
+# Windows
+.venv\Scripts\activate
+python GUI\unified_control.py
+```
+
+---
+
+## 🚀 传统启动方式
 
 ### Windows用户
 1. 双击 `start.bat` 文件
@@ -14,10 +57,10 @@
    ./start.sh
    ```
 
-## 📦 手动安装
+## 📦 手动安装（pip）
 
 ### 1. 检查Python版本
-确保安装了Python 3.7或更高版本：
+确保安装了Python 3.10、3.11或3.12：
 ```bash
 python --version
 ```
@@ -53,8 +96,11 @@ python unified_control.py
 
 ## 🔧 常见问题
 
+### Q: uv 安装失败
+**A:** 请确保正确执行了 uv 的安装命令，安装后可能需要重新打开终端。
+
 ### Q: pygame导入失败
-**A:** 运行 `pip install pygame`
+**A:** 运行 `uv pip install pygame` 或 `pip install pygame`
 
 ### Q: 检测不到手柄
 **A:** 
@@ -83,7 +129,7 @@ python unified_control.py
 
 ## 🎯 快速上手
 
-1. **启动程序** → 运行 `start.bat` (Windows) 或 `start.sh` (Linux/macOS)
+1. **启动程序** → 运行 `uv run python GUI/unified_control.py`
 2. **连接机器狗** → 输入IP地址，点击连接
 3. **选择控制模式** → 键盘/手柄/GUI按钮
 4. **开始控制** → 点击"开始控制"按钮

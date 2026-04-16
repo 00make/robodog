@@ -25,6 +25,10 @@ wheels/
 venv/
 env/
 ENV/
+.venv/
+
+# UV
+uv.lock
 
 # IDE
 .idea/

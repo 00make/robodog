@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robodog"
+version = "0.1.2.5"
+description = "A Python library for controlling AlphaDog robotic dogs"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10,<3.13"
+authors = [
+    {name = "00make", email = "towardsrwby@gmail.com"},
+]
+keywords = ["robotics", "alphadog", "ros", "robot control", "python"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "roslibpy>=1.3.0",
+    "typing-extensions>=4.0.0",
+]
+
+[project.optional-dependencies]
+gui = [
+    "numpy>=2.0.1",
+    "pyserial>=3.5",
+    "pynput>=1.7.6",
+    "pygame>=2.5.0",
+]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "black>=22.0",
+    "isort>=5.0",
+    "flake8>=3.9",
+]
+docs = [
+    "sphinx>=4.0",
+    "sphinx-rtd-theme>=0.5",
+]
+all = [
+    "robodog[gui,dev,docs]",
+]
+
+[project.urls]
+Homepage = "https://github.com/00make/robodog"
+"Bug Tracker" = "https://github.com/00make/robodog/issues"
+Documentation = "https://github.com/00make/robodog/wiki"
+"Source Code" = "https://github.com/00make/robodog"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["robodog*", "dance*"]
+exclude = ["tests*", "test*"]
+
+[tool.setuptools.package-data]
+robodog = ["py.typed"]
+
+[tool.uv]
+# uv will automatically download the Python version specified in .python-version
+# if it's not available on the system

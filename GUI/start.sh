@@ -8,7 +8,7 @@ echo ""
 # 检查Python是否安装
 if ! command -v python3 &> /dev/null; then
     if ! command -v python &> /dev/null; then
-        echo "错误: 未找到Python，请先安装Python 3.7+"
+        echo "错误: 未找到Python，请先安装Python 3.10、3.11或3.12"
         exit 1
     else
         PYTHON_CMD="python"

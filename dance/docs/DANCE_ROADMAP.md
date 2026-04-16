@@ -214,7 +214,7 @@ DanceSystem/
 ## 🛠️ 技术选型建议
 
 ### 核心技术栈
-- **主语言**: Python 3.8+
+- **主语言**: Python 3.10+
 - **GUI框架**: PyQt5/6 (更适合复杂界面) 或 tkinter
 - **数据格式**: JSON/YAML (动作定义)
 - **网络通信**: WebSocket (asyncio) 或 TCP Socket

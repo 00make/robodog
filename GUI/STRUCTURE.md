@@ -4,11 +4,17 @@
 GUI/
 ├── unified_control.py      # 主程序文件 - 集成所有控制功能的GUI应用
 ├── README.md              # 详细使用说明文档
-├── INSTALL.md             # 快速安装指南
-├── requirements.txt       # Python依赖列表
+├── INSTALL.md             # 快速安装指南（含 uv 推荐方式）
+├── requirements.txt       # Python依赖列表（备用）
 ├── config_example.ini     # 配置文件示例
-├── start.bat             # Windows启动脚本
-└── start.sh              # Linux/macOS启动脚本
+├── start.bat             # Windows传统启动脚本
+└── start.sh              # Linux/macOS传统启动脚本
+
+项目根目录：
+├── pyproject.toml         # 项目主配置（uv / pip 通用）
+├── install.sh             # uv 一键安装脚本（Linux/macOS）
+├── install.bat            # uv 一键安装脚本（Windows）
+└── .python-version        # 推荐 Python 版本
 ```
 
 ## 📁 文件说明
@@ -87,9 +93,9 @@ GUI/
 ## 🔄 版本兼容性
 
 ### Python版本
-- **最低要求：** Python 3.7
-- **推荐版本：** Python 3.8+
-- **测试版本：** Python 3.9, 3.10, 3.11
+- **最低要求：** Python 3.10
+- **推荐版本：** Python 3.11
+- **测试版本：** Python 3.10, 3.11, 3.12
 
 ### 操作系统
 - **Windows：** Windows 10/11
